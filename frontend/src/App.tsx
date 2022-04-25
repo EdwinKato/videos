@@ -1,14 +1,18 @@
-import { ChakraProvider, Box, Grid, Text, theme } from '@chakra-ui/react'
+import { Routes, Route } from 'react-router-dom'
+import { ChakraProvider, Box, Grid, theme } from '@chakra-ui/react'
 import { ColorModeSwitcher } from './ColorModeSwitcher'
 import { Videos } from './components/Videos'
+import { Video } from './components/Video'
 
 export const App = () => (
   <ChakraProvider theme={theme}>
     <Box textAlign="center" fontSize="xl">
       <Grid p={6}>
-        <Text>Videos</Text>
         <ColorModeSwitcher justifySelf="flex-end" />
-        <Videos />
+        <Routes>
+          <Route path="/" element={<Videos />} />
+          <Route path="videos/:videoId" element={<Video />} />
+        </Routes>
       </Grid>
     </Box>
   </ChakraProvider>
