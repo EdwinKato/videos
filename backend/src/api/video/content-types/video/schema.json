@@ -4,7 +4,8 @@
   "info": {
     "singularName": "video",
     "pluralName": "videos",
-    "displayName": "Video"
+    "displayName": "Video",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -13,7 +14,7 @@
   "attributes": {
     "slug": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "title": {
       "type": "string",
