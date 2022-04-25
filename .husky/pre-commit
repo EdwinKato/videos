@@ -1,0 +1,5 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Commenting out tests for now since we don't have any
+# cd frontend && npm test:nowatch
