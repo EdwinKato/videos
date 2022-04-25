@@ -15,16 +15,8 @@ import {
   Button,
 } from '@chakra-ui/react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
-
-interface Video {
-  attributes: {
-    slug: string
-    title: string
-    url: string
-    isPublic: boolean
-  }
-  id: number
-}
+import { getVideo, updateVideo } from '../api'
+import type { Video } from '../api/types'
 
 export const Edit = () => {
   const { videoId } = useParams()
@@ -33,15 +25,9 @@ export const Edit = () => {
   const [video, setVideo] = useState(state as Video)
 
   useEffect(() => {
-    const url = `http://localhost:1337/api/videos${videoId}`
-
     const fetchData = async () => {
-      try {
-        const response = await fetch(url)
-        const { data } = await response.json()
-        setVideo(data)
-      } catch (error) {
-        console.log('error', error)
+      if (videoId) {
+        setVideo(await getVideo(videoId))
       }
     }
 
@@ -50,7 +36,7 @@ export const Edit = () => {
     } else {
       fetchData()
     }
-  }, [videoId, state])
+  }, [state, videoId])
 
   const {
     attributes: { title, url: videoURL, slug, isPublic },
@@ -61,27 +47,19 @@ export const Edit = () => {
   }
 
   const onSave = async () => {
-    const url = `http://localhost:1337/api/videos/${videoId}`
-    console.log('videoURL', videoURL)
-    const response = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        data: {
-          title,
-          url: videoURL,
-          slug,
-          isPublic,
-        },
-      }),
-    })
-    const json = await response.json()
-    navigate(`/videos/${videoId}`, { state: json.data })
+    if (videoId) {
+      const editedVideo = await updateVideo(videoId, {
+        title,
+        url: videoURL,
+        slug,
+        isPublic,
+      })
+
+      navigate(`/videos/${videoId}`, { state: editedVideo })
+    }
   }
 
-  const onPublicChange = (value: string) => {
+  const onIsPublicChange = (value: string) => {
     setVideo({
       ...video,
       attributes: {
@@ -144,7 +122,7 @@ export const Edit = () => {
         </FormControl>
         <FormControl as="fieldset">
           <FormLabel as="legend">Is the video public?</FormLabel>
-          <RadioGroup value={publicValue} onChange={onPublicChange}>
+          <RadioGroup value={publicValue} onChange={onIsPublicChange}>
             <HStack spacing="24px">
               <Radio value="Yes">Yes</Radio>
               <Radio value="No">No</Radio>

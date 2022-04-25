@@ -9,35 +9,18 @@ import {
 } from '@chakra-ui/react'
 import { EditIcon } from '@chakra-ui/icons'
 import { Link, useNavigate } from 'react-router-dom'
-
-interface Video {
-  attributes: {
-    slug: string
-    title: string
-    url: string
-    isPublic: boolean
-  }
-  id: number
-}
+import type { Video } from '../api/types'
+import { getVideos } from '../api'
 
 export const Videos = () => {
   const [videos, setVideos] = useState<Video[]>([])
   const navigate = useNavigate()
 
+  const fetchData = async () => {
+    setVideos(await getVideos())
+  }
+
   useEffect(() => {
-    const url = 'http://localhost:1337/api/videos'
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url)
-        const json = await response.json()
-        console.log(json)
-        setVideos(json.data)
-      } catch (error) {
-        console.log('error', error)
-      }
-    }
-
     fetchData()
   }, [])
 
