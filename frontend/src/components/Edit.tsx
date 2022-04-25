@@ -90,7 +90,7 @@ export const Edit = () => {
 
   return (
     <Center width="100%">
-      <VStack width="700px">
+      <VStack width="100%" maxWidth="700px">
         <Flex width="100%" justifyContent="space-between">
           <Heading fontSize="xl">Edit</Heading>
           <CloseButton onClick={onClose} />
