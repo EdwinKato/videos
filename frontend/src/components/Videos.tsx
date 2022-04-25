@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Box, Text, Grid, GridItem } from '@chakra-ui/react'
+import { Box, Text, GridItem, SimpleGrid } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 
 interface Video {
@@ -34,7 +34,7 @@ export const Videos = () => {
 
   return (
     <Box textAlign="center" fontSize="xl">
-      <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+      <SimpleGrid minChildWidth="250px" spacing="40px">
         {videos.map((video) => {
           const {
             id,
@@ -51,7 +51,7 @@ export const Videos = () => {
             </GridItem>
           )
         })}
-      </Grid>
+      </SimpleGrid>
     </Box>
   )
 }
