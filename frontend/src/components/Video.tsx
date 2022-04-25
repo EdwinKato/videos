@@ -1,5 +1,15 @@
 import { useState, useEffect } from 'react'
-import { Text, Center, VStack, CloseButton, Flex } from '@chakra-ui/react'
+import {
+  Center,
+  VStack,
+  CloseButton,
+  Flex,
+  Box,
+  Heading,
+  IconButton,
+  Icon,
+} from '@chakra-ui/react'
+import { EditIcon } from '@chakra-ui/icons'
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
 
 interface Video {
@@ -13,13 +23,13 @@ interface Video {
 }
 
 export const Video = () => {
-  const { id } = useParams()
+  const { videoId } = useParams()
   const { state } = useLocation()
   const navigate = useNavigate()
   const [video, setVideo] = useState(state as Video)
 
   useEffect(() => {
-    const url = `http://localhost:1337/api/videos${id}`
+    const url = `http://localhost:1337/api/videos${videoId}`
 
     const fetchData = async () => {
       try {
@@ -36,7 +46,7 @@ export const Video = () => {
     } else {
       fetchData()
     }
-  }, [id, state])
+  }, [state, videoId])
 
   const {
     attributes: { title, url },
@@ -46,17 +56,31 @@ export const Video = () => {
     navigate('/')
   }
 
+  const onEdit = (video: Video) => {
+    navigate(`/videos/${video.id}/edit`, { state: video })
+  }
+
   return (
     <Center>
-      <VStack>
-        <Flex width="100%" justifyContent="space-between">
-          <Text>{title}</Text>
-          <CloseButton onClick={onClose} />
-        </Flex>
-        <video controls>
-          <source src={url} />
-        </video>
-      </VStack>
+      <Box shadow="md" borderWidth="1px">
+        <VStack width="100%">
+          <CloseButton onClick={onClose} alignSelf="flex-end" />
+          <video controls>
+            <source src={url} />
+          </video>
+          <Flex width="100%" justifyContent="space-between">
+            <Heading fontSize="md" p={3}>
+              {title}
+            </Heading>
+            <IconButton
+              aria-label="Close"
+              variant="ghost"
+              icon={<Icon as={EditIcon} />}
+              onClick={() => onEdit(video)}
+            />
+          </Flex>
+        </VStack>
+      </Box>
     </Center>
   )
 }

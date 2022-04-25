@@ -17,6 +17,7 @@
     "wait-on": "5.2.1"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.1.7",
     "react-router-dom": "^6.3.0"
   }
 }
